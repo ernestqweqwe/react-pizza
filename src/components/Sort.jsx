@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function Sort() {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState(0);
