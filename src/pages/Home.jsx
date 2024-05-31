@@ -21,7 +21,6 @@ const Home = () => {
   const {searchValue} = React.useContext(SearchContext)
 
   React.useEffect(() => {
-    console.log(searchValue);
     setIsLoading(true);
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const sortBy = sortType.sortProperty.replace('-', '');
