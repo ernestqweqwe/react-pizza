@@ -1,41 +1,50 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDirection, setSort } from '../redux/slices/filterSlice';
-export  const list = [
+import { click } from '@testing-library/user-event/dist/click';
+export const list = [
   { name: 'популярности', sortProperty: 'rating' },
   { name: 'цене', sortProperty: 'price' },
   { name: 'алфавиту', sortProperty: 'title' },
 ];
 
-
-
 export default function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
-
-
+  const sortRef = React.useRef();
 
   const [open, setOpen] = React.useState(false);
-  
 
   const onClickListItem = (obj) => {
     setOpen(false);
     dispatch(setSort(obj));
   };
 
-  const onClickDirection =(value)=>{
-    dispatch(setDirection(value))
-  }
+  const onClickDirection = (value) => {
+    dispatch(setDirection(value));
+  };
 
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+        console.log('клик');
+      }
+    };
 
- 
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <div className="sort__buttons">
-          <button  onClick={() => onClickDirection('asc')} > ↑ </button>
-          <button  onClick={() => onClickDirection('desc')}> ↓ </button>
+          <button onClick={() => onClickDirection('asc')}> ↑ </button>
+          <button onClick={() => onClickDirection('desc')}> ↓ </button>
         </div>
         <b>Сортировка по:</b>
         <span onClick={() => setOpen(!open)}>{sort.name}</span>
