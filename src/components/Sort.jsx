@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDirection, setSort } from '../redux/slices/filterSlice';
-import { click } from '@testing-library/user-event/dist/click';
 export const list = [
   { name: 'популярности', sortProperty: 'rating' },
   { name: 'цене', sortProperty: 'price' },
