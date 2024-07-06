@@ -11,23 +11,25 @@ import PizzaBlock from '../components/PizzaBlock';
 import { list } from '../components/Sort';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { fetchPizzas} from '../redux/slices/pizzaSlice';
 import NotFoundBlock from '../components/NotFoundBlock';
 
 const Home = () => {
   const categoryId = useSelector((state) => state.filter.categoryId); // Достаем categoryId из нашего filterSlice
-  const sortType = useSelector((state) => state.filter.sort);
+  const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const direction = useSelector((state) => state.filter.direction);
+
   const currentPage = useSelector((state) => state.filter.currentPage);
+  const searchValue = useSelector((state) => state.filter.searchValue);
+
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { items, status } = useSelector((state) => state.pizza);
+  const {items, status} = useSelector((state) => state.pizza);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { searchValue } = React.useContext(SearchContext);
+
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -38,26 +40,25 @@ const Home = () => {
   };
 
   const getPizzas = async () => {
+    
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const sortBy = sortType.sortProperty;
+    const sortBy = sortType
     const order = direction;
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(
-      fetchPizzas({
-        category,
-        sortBy,
-        order,
-        search,
-        currentPage,
-      }),
-    );
+    dispatch(fetchPizzas({
+      category,
+      sortBy,
+      order,
+      search,
+      currentPage
+    }));
   };
   // Если первого рендера еще не было то не надо вшивать в адресную строчку параметры и тк useEffect всегда выполняет первый рендер тем самым поменяет isMounted на true
   React.useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
-        sortType: sortType.sortProperty,
+        sortType,
         categoryId,
         currentPage,
         direction,
@@ -98,12 +99,9 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      {status === 'error' ? (
-        <NotFoundBlock />
-      ) : (
-        <div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>
-      )}
+    {status === 'error'? <NotFoundBlock/>:<div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>}
 
+      
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </>
   );

@@ -1,17 +1,19 @@
 import React from 'react';
-import { SearchContext } from '../../App';
 import debounce from 'lodash.debounce';
 
 import styles from './search.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 const Search = () => {
+  const dispatch = useDispatch()
   const [value, setValue] = React.useState('');
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
   const inputRef = React.useRef(); // вытаскивание ссылки на дом элемент инпута(в самом инпуте пишет ref={inputRef} )
 
   const updateSearchValue = React.useCallback(
     debounce((str) => {
-      setSearchValue(str);
+      dispatch(setSearchValue(str))
+
     }, 700),
     [],
   );
@@ -22,7 +24,7 @@ const Search = () => {
   };
 
   const onClickClear = () => {
-    setSearchValue('');
+    dispatch(setSearchValue(''))
     setValue('');
     inputRef.current.focus();
   };
@@ -48,7 +50,7 @@ const Search = () => {
         type="text"
         placeholder="поиск пиццы"
       />
-      {searchValue && (
+      {value && (
         <svg
           onClick={() => {
             onClickClear();
