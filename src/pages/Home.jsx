@@ -11,7 +11,7 @@ import PizzaBlock from '../components/PizzaBlock';
 import { list } from '../components/Sort';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { fetchPizzas} from '../redux/slices/pizzaSlice';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
 import NotFoundBlock from '../components/NotFoundBlock';
 
 const Home = () => {
@@ -24,12 +24,10 @@ const Home = () => {
 
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const {items, status} = useSelector((state) => state.pizza);
+  const { items, status } = useSelector((state) => state.pizza);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -40,19 +38,20 @@ const Home = () => {
   };
 
   const getPizzas = async () => {
-    
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const sortBy = sortType
+    const sortBy = sortType;
     const order = direction;
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(fetchPizzas({
-      category,
-      sortBy,
-      order,
-      search,
-      currentPage
-    }));
+    dispatch(
+      fetchPizzas({
+        category,
+        sortBy,
+        order,
+        search,
+        currentPage,
+      }),
+    );
   };
   // Если первого рендера еще не было то не надо вшивать в адресную строчку параметры и тк useEffect всегда выполняет первый рендер тем самым поменяет isMounted на true
   React.useEffect(() => {
@@ -99,9 +98,12 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-    {status === 'error'? <NotFoundBlock/>:<div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>}
+      {status === 'error' ? (
+        <NotFoundBlock />
+      ) : (
+        <div className="content__items">{status === 'loading' ? skeleton : pizzas}</div>
+      )}
 
-      
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </>
   );
