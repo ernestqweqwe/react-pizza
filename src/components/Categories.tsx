@@ -2,7 +2,7 @@ import React from 'react'
 
 type CategoryProps ={
   value:number,
-  onChangeCategory:any
+  onChangeCategory:(i:number)=> void
 
 }
 

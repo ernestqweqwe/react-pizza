@@ -3,11 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectSort, setDirection, setSort } from '../redux/slices/filterSlice';
 
 type SortItem = {
-  name:string;
-  sortProperty:string;
-}
-
-
+  name: string;
+  sortProperty: string;
+};
 
 export const list: SortItem[] = [
   { name: 'популярности', sortProperty: 'rating' },
@@ -27,13 +25,13 @@ export default function Sort() {
     dispatch(setSort(obj));
   };
 
-  const onClickDirection = (value:any) => {
+  const onClickDirection = (value: any) => {
     dispatch(setDirection(value));
   };
 
   React.useEffect(() => {
-    const handleClickOutside = (event:any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpen(false);
       }
     };
