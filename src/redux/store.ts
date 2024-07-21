@@ -10,3 +10,5 @@ export const store = configureStore({
     pizza,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState> // Созздаем глобальный стейт в котором храняться все наши стейты(filter, cart, pizza)

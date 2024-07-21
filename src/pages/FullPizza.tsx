@@ -28,7 +28,7 @@ const FullPizza: React.FC = () => {
 
   return (
     <div>
-      <img src={pizza.imageUrl} alt={`pizzsImg${id}`} />
+      <img src={pizza.imageUrl} alt={`pizzImg${id}`} />
       <h2>{pizza.title}</h2>
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt ut tempore corrupti error
